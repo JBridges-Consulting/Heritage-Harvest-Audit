@@ -4,6 +4,7 @@ Bridging Retail Strategy and Autonomous AI
 This portfolio demonstrates a multi-agent ecosystem designed to automate the lifecycle of a CPG product—from internal knowledge management to retail shelf execution. Each agent is built to solve a specific business problem: Data Silos, Financial Leakage, and Market Blind Spots.
 
 🤖 The Four Agents
+
 Agent 1: The CPG Knowledge Concierge 
 
 The Problem: Sales teams waste hours searching through 100+ page distributor manuals and trade policy PDFs.
