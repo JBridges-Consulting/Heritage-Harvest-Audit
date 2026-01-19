@@ -1,4 +1,4 @@
-sku_id,upc,product_name,category,list_price,cogs,min_margin_threshold,max_allowable_discount,is_edlp,Weekly_Velocity
+sku_id,upc,product_name,category,list_price,cogs,min_margin_threshold,max_allowable_discount,is_edlp,weekly_velocity
 10010,070123001015,Classic Salted Potato Chips 8oz,Salty Snacks,4.49,1.8,0.45,0.25,FALSE,4
 10011,070123001022,Classic Salted Potato Chips 16oz,Salty Snacks,6.99,2.5,0.5,0.3,FALSE,5
 10012,070123001039,Kettle Cooked Jalapeno 8oz,Salty Snacks,4.99,2.1,0.4,0.2,FALSE,2

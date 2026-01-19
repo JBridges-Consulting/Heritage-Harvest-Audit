@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import pandas as pd
 from openai import OpenAI
@@ -67,7 +68,7 @@ df_pricing = load_pricing()
 # --- 4. THE INTERFACE ---
 if df_pricing is not None:
     # Convert CSV to a strictly formatted string for the AI's prompt
-    pricing_context = df_pricing[['product_name', 'list_price', 'weekly_velocity']].to_string(index=False)
+    pricing_context = df_pricing[['product_name', 'list_price', 'Weekly_Velocity']].to_string(index=False)
     
     uploaded_file = st.file_uploader("Upload Shelf Scan", type=["jpg", "png"])
 
