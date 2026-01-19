@@ -25,9 +25,6 @@ def encode_image(uploaded_file):
 # --- 2. EMAIL UTILITY ---
 def send_email(recipient, buyer_name, content):
     try:
-        # CLEANING: Removes the non-breaking space error character
-        content = content.replace('\xa0', ' ') 
-        
         sender = st.secrets["email"]["smtp_user"]
         pwd = st.secrets["email"]["smtp_pass"]
         
@@ -37,14 +34,16 @@ def send_email(recipient, buyer_name, content):
         msg['Subject'] = f"Strategic Category Opportunity for {buyer_name}"
         
         signature = "\n\nJenica\nHarvest Heritage\nNational Account Manager, Grocery"
-        
-        # Clean technical headers from content
         clean_content = content.replace("**Quantifiable Buyer Pitch:**", "").replace("Quantifiable Buyer Pitch", "")
         
-        body = f"Hello {buyer_name},\n\nBased on today's shelf scan, we have identified significant revenue leakage in your category. See the full strategic recovery plan below:\n\n{clean_content}{signature}"
+        # Build the initial body
+        raw_body = f"Hello {buyer_name},\n\nBased on today's shelf scan, we have identified significant revenue leakage in your category. See the full strategic recovery plan below:\n\n{clean_content}{signature}"
         
-        # ENCODING: Added 'utf-8' here to prevent ASCII errors
-        msg.attach(MIMEText(body, 'plain', 'utf-8')) 
+        # --- THE FINAL CLEANING STEP ---
+        # This cleans EVERY part of the final email text
+        final_body = raw_body.replace('\xa0', ' ').encode('utf-8', errors='ignore').decode('utf-8')
+        
+        msg.attach(MIMEText(final_body, 'plain', 'utf-8'))
         
         server = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()
@@ -55,7 +54,6 @@ def send_email(recipient, buyer_name, content):
     except Exception as e:
         st.error(f"Email Error: {e}")
         return False
-
 # --- 3. DATA LOAD (MANDATORY SOURCE OF TRUTH) ---
 def load_pricing():
     try:
