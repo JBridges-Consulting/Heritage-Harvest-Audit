@@ -53,29 +53,30 @@ def send_email(recipient, buyer_name, content):
         return False
 
 # --- 3. DATA LOAD (MANDATORY SOURCE OF TRUTH) ---
+# --- 3. DATA LOAD (MANDATORY SOURCE OF TRUTH) ---
 def load_pricing():
     try:
-        # Use the RAW GitHub URL so it works everywhere (Mac, GitHub, Streamlit Cloud)
-        # Replace 'YOUR_USERNAME' and 'YOUR_REPO' with your actual GitHub details
+        # RAW GitHub URL for cloud reliability
         url = "https://raw.githubusercontent.com/JBridges-Consulting/CPG_AgenticWorkflows_Portfolio/main/03_Retail_Signal_Monitor/pricing_master_UPSPW.csv"
         
         df = pd.read_csv(url, skipinitialspace=True)
-        
-        # Standardize columns to lowercase to avoid naming crashes
         df.columns = df.columns.str.lower().str.strip()
         
-        # Force numeric conversion for math accuracy
+        # Numeric safety
         df['list_price'] = pd.to_numeric(df['list_price'], errors='coerce')
         df['weekly_velocity'] = pd.to_numeric(df['weekly_velocity'], errors='coerce')
         
         return df
     except Exception as e:
-        st.error(f"Cloud Data Error: Could not fetch CSV from GitHub. {e}")
+        st.error(f"Cloud Data Error: {e}")
         return None
+
+# --- CALL THE FUNCTION HERE (Outside the def block) ---
+df_pricing = load_pricing()
 
 # --- 4. THE INTERFACE ---
 if df_pricing is not None:
-    # Convert CSV to a strictly formatted string for the AI's prompt
+    # This will now work because df_pricing is defined above
     pricing_context = df_pricing[['product_name', 'list_price', 'weekly_velocity']].to_string(index=False)
     
     uploaded_file = st.file_uploader("Upload Shelf Scan", type=["jpg", "png"])
