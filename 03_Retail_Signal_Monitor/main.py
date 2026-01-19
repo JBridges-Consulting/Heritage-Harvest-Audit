@@ -57,7 +57,7 @@ def send_email(recipient, buyer_name, content):
 def load_pricing():
     try:
         # RAW GitHub URL for cloud reliability
-        url = "https://raw.githubusercontent.com/JBridges-Consulting/CPG_AgenticWorkflows_Portfolio/main/03_Retail_Signal_Monitor/pricing_master_UPSPW.csv"
+        url = "url = https://raw.githubusercontent.com/JBridges-Consulting/CPG_AgenticWorkflows_Portfolio/main/03_Retail_Signal_Monitor/pricing_master_UPSPW.csv"
         
         df = pd.read_csv(url, skipinitialspace=True)
         df.columns = df.columns.str.lower().str.strip()
