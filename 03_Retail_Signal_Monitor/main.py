@@ -32,10 +32,12 @@ def send_email(recipient, buyer_name, content):
         msg['To'] = recipient
         msg['Subject'] = f"Strategic Category Opportunity for {buyer_name}"
         
+        # EXACT SIGNATURE
         signature = "\n\nJenica\nHarvest Heritage\nNational Account Manager, Grocery"
-        body = f"Hello {buyer_name},\n\nBased on today's shelf scan, we have identified significant revenue leakage and shelf-space inefficiencies. See the full strategic plan below:\n\n{content}{signature}"
         
-        # FINAL ENCODING SHIELD
+        body = f"Hello {buyer_name},\n\nBased on today's shelf scan, we have identified significant revenue leakage. See the strategic plan below:\n\n{content}{signature}"
+        
+        # ENCODING FIX: Scrub ghost characters (\xa0) and force UTF-8
         clean_body = body.replace('\xa0', ' ').encode('utf-8', errors='ignore').decode('utf-8')
         msg.attach(MIMEText(clean_body, 'plain', 'utf-8'))
         
@@ -85,21 +87,21 @@ if df_pricing is not None:
                                 {
                                     "type": "text", 
                                     "text": f"""
-                                    System: Senior Category Manager. Use ONLY this data: {pricing_context}
+                                    System: Senior Category Manager. Use ONLY this data for velocity/price: {pricing_context}
                                     
                                     MISSION:
-                                    1. EXECUTIVE SUMMARY: Start with a professional 3-sentence summary. Focus on category decay and identifying "Overskewed" competitor products that are wasting shelf space.
-                                    2. VISIBILITY SCAN: Identify 6 empty or inefficiently used shelf facings.
+                                    1. START with a professional 3-sentence summary. Focus on category revenue leakage and "Overskewed" competitor products wasting shelf space. (DO NOT use a header).
+                                    2. Identify exactly 6 empty or overskewed shelf facings.
                                     3. TABLE: [Competitor SKU, Status (OOS or Overskewed), Replacement SKU, Weekly Revenue Loss Calculation, Weekly Revenue Loss].
                                     
                                     MATH RULE: 
-                                    - Weekly Revenue Loss = (list_price * 7 * weekly_velocity * 1). 
-                                    - You MUST show the math in 'Weekly Revenue Loss Calculation' (e.g., $4.49 * 7 * 4 * 1).
+                                    - Weekly Revenue Loss = (list_price * 7 * weekly_velocity * number_of_facings). 
+                                    - Show the FULL math in 'Weekly Revenue Loss Calculation' (e.g., $4.49 * 7 * 4 * 1).
                                     
-                                    4. STRATEGIC PITCH: Write two bolded paragraphs explaining why cutting "Overskewed" slow-movers in favor of Heritage Harvest will increase total category ROI.
+                                    4. STRATEGIC PITCH: Write two bolded paragraphs on increasing category ROI by cutting slow-movers for Heritage Harvest. (DO NOT use a header).
                                     - BOLD the total aggregate weekly revenue loss.
 
-                                    Format: Markdown table and plain text. No technical headers.
+                                    Format: Plain professional text and a Markdown table ONLY. NO "Visibility Scan" list.
                                     """
                                 },
                                 {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_image}", "detail": "high"}}
