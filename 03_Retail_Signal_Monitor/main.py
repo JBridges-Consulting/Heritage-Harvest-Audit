@@ -25,6 +25,9 @@ def encode_image(uploaded_file):
 # --- 2. EMAIL UTILITY ---
 def send_email(recipient, buyer_name, content):
     try:
+        # CLEANING: Removes the non-breaking space error character
+        content = content.replace('\xa0', ' ') 
+        
         sender = st.secrets["email"]["smtp_user"]
         pwd = st.secrets["email"]["smtp_pass"]
         
@@ -40,7 +43,8 @@ def send_email(recipient, buyer_name, content):
         
         body = f"Hello {buyer_name},\n\nBased on today's shelf scan, we have identified significant revenue leakage in your category. See the full strategic recovery plan below:\n\n{clean_content}{signature}"
         
-        msg.attach(MIMEText(body, 'plain', 'utf-8')) # Added 'utf-8' here
+        # ENCODING: Added 'utf-8' here to prevent ASCII errors
+        msg.attach(MIMEText(body, 'plain', 'utf-8')) 
         
         server = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()
@@ -69,12 +73,11 @@ def load_pricing():
         st.error(f"Cloud Data Error: {e}")
         return None
 
-# --- CALL THE FUNCTION HERE (Outside the def block) ---
+# --- CALL THE FUNCTION HERE ---
 df_pricing = load_pricing()
 
 # --- 4. THE INTERFACE ---
 if df_pricing is not None:
-    # This will now work because df_pricing is defined above
     pricing_context = df_pricing[['product_name', 'list_price', 'weekly_velocity']].to_string(index=False)
     
     uploaded_file = st.file_uploader("Upload Shelf Scan", type=["jpg", "png"])
@@ -90,7 +93,7 @@ if df_pricing is not None:
                 with st.spinner("Calculating Revenue Loss from Master Data..."):
                     response = client.chat.completions.create(
                         model="gpt-4o",
-                        temperature=0, # Forces absolute math accuracy
+                        temperature=0, 
                         messages=[{
                             "role": "user",
                             "content": [
