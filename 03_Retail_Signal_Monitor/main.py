@@ -34,60 +34,54 @@ def send_email(recipient, buyer_name, content):
         msg['Subject'] = f"Strategic Category Opportunity for {buyer_name}"
         
         signature = "\n\nJenica\nHarvest Heritage\nNational Account Manager, Grocery"
+        
+        # Clean technical headers
         clean_content = content.replace("**Quantifiable Buyer Pitch:**", "").replace("Quantifiable Buyer Pitch", "")
         
-        # Build the initial body
-        raw_body = f"Hello {buyer_name},\n\nBased on today's shelf scan, we have identified significant revenue leakage in your category. See the full strategic recovery plan below:\n\n{clean_content}{signature}"
+        # Combine into body
+        body = f"Hello {buyer_name},\n\nBased on today's shelf scan, we have identified significant revenue leakage in your category. See the full strategic recovery plan below:\n\n{clean_content}{signature}"
         
-        # --- THE FINAL CLEANING STEP ---
-        # This cleans EVERY part of the final email text
-        final_body = raw_body.replace('\xa0', ' ').encode('utf-8', errors='ignore').decode('utf-8')
-        
-        msg.attach(MIMEText(final_body, 'plain', 'utf-8'))
+        # --- THE FIX: Clean 'ghost' characters and force UTF-8 ---
+        clean_body = body.replace('\xa0', ' ')
+        msg.attach(MIMEText(clean_body, 'plain', 'utf-8'))
         
         server = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()
         server.login(sender, pwd)
-        server.sendmail(sender, recipient, msg.as_string())
+        # Use send_message instead of sendmail for better character handling
+        server.send_message(msg)
         server.quit()
         return True
     except Exception as e:
         st.error(f"Email Error: {e}")
         return False
-# --- 3. DATA LOAD (MANDATORY SOURCE OF TRUTH) ---
+
+# --- 3. DATA LOAD ---
 def load_pricing():
     try:
-        # RAW GitHub URL for cloud reliability
         url = "https://raw.githubusercontent.com/JBridges-Consulting/CPG_AgenticWorkflows_Portfolio/main/03_Retail_Signal_Monitor/pricing_master_UPSPW.csv"
         df = pd.read_csv(url, skipinitialspace=True)
         df.columns = df.columns.str.lower().str.strip()
-        
-        # Numeric safety
         df['list_price'] = pd.to_numeric(df['list_price'], errors='coerce')
         df['weekly_velocity'] = pd.to_numeric(df['weekly_velocity'], errors='coerce')
-        
         return df
     except Exception as e:
         st.error(f"Cloud Data Error: {e}")
         return None
 
-# --- CALL THE FUNCTION HERE ---
 df_pricing = load_pricing()
 
 # --- 4. THE INTERFACE ---
 if df_pricing is not None:
     pricing_context = df_pricing[['product_name', 'list_price', 'weekly_velocity']].to_string(index=False)
-    
     uploaded_file = st.file_uploader("Upload Shelf Scan", type=["jpg", "png"])
 
     if uploaded_file:
         col1, col2 = st.columns([1, 1])
         with col1:
             st.image(uploaded_file, caption="Shelf Reality", use_container_width=True)
-            
             if st.button("📈 Run Strategic Analysis"):
                 base64_image = encode_image(uploaded_file)
-                
                 with st.spinner("Calculating Revenue Loss from Master Data..."):
                     response = client.chat.completions.create(
                         model="gpt-4o",
@@ -97,26 +91,7 @@ if df_pricing is not None:
                             "content": [
                                 {
                                     "type": "text", 
-                                    "text": f"""
-                                    System: Zero-Refusal Mode. You are a Senior Category Manager.
-                                    Constraint: You MUST use the provided CSV data. NEVER hallucinate prices like $1.99.
-                                    
-                                    REFERENCE PRICING DATA:
-                                    {pricing_context}
-                                    
-                                    MISSION:
-                                    1. STRATEGIC SUMMARY: Start with a professional paragraph on category decay.
-                                    2. VISIBILITY SCAN: Identify exactly 6 empty shelf facings in the image.
-                                    3. TABLE: Include 'Competitor OOS', 'Replacement SKU', 'OOS Quantity', 'Weekly Revenue Loss Calculation', 'Weekly Revenue Loss'.
-                                    4. MATH: You MUST pull 'list_price' and 'weekly_velocity' from the REFERENCE PRICING DATA for each row.
-                                       - Calculation: (list_price * 7 * weekly_velocity * 1).
-                                    
-                                    5. BUYER PITCH: Write professional bolded paragraphs immediately following the table.
-                                       - NO 'Quantifiable Buyer Pitch' header.
-                                       - BOLD the 6 facings and the Total Weekly Revenue Loss calculated from your table.
-
-                                    Format: Start with 'Analysis of Available Shelf Space'.
-                                    """
+                                    "text": f"System: Senior Category Manager. Use this data: {pricing_context}. Identify 6 empty facings. Create table with revenue loss. Format: Start with 'Analysis of Available Shelf Space'."
                                 },
                                 {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_image}", "detail": "high"}}
                             ]
@@ -128,16 +103,12 @@ if df_pricing is not None:
             if st.session_state.report_text:
                 st.subheader("Strategic Growth Report")
                 st.markdown(st.session_state.report_text)
-                
                 st.divider()
                 st.write("### 📧 Deliver Plan to Buyer")
-                b_name = st.text_input("Enter Buyer Name", placeholder="e.g., Sarah Jenkins")
-                b_email = st.text_input("Enter Buyer Email", placeholder="buyer@retailer.com")
-                
+                b_name = st.text_input("Enter Buyer Name")
+                b_email = st.text_input("Enter Buyer Email")
                 if st.button("🚀 Send Strategic Plan"):
                     if b_name and b_email:
                         if send_email(b_email, b_name, st.session_state.report_text):
                             st.success(f"Strategy Plan sent to {b_name}!")
                             st.balloons()
-                    else:
-                        st.warning("Please enter a name and email.")
