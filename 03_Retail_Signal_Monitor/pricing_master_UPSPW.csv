@@ -1,0 +1,11 @@
+sku_id,upc,product_name,category,list_price,cogs,min_margin_threshold,max_allowable_discount,is_edlp,Weekly_Velocity
+10010,070123001015,Classic Salted Potato Chips 8oz,Salty Snacks,4.49,1.8,0.45,0.25,FALSE,4
+10011,070123001022,Classic Salted Potato Chips 16oz,Salty Snacks,6.99,2.5,0.5,0.3,FALSE,5
+10012,070123001039,Kettle Cooked Jalapeno 8oz,Salty Snacks,4.99,2.1,0.4,0.2,FALSE,2
+10013,070123001046,Kettle Cooked Sea Salt 8oz,Salty Snacks,4.99,2.1,0.4,0.2,FALSE,2
+10014,070123001053,Kettle Cooked BBQ 8oz,Salty Snacks,4.99,2.1,0.4,0.2,FALSE,2
+10015,070123001060,Waves Rippled Sour Cream 8oz,Salty Snacks,4.29,1.75,0.42,0.22,FALSE,2
+10016,070123001077,Waves Rippled Cheddar 8oz,Salty Snacks,4.29,1.75,0.42,0.22,FALSE,3
+10017,070123001084,Baked Low Fat Original 6oz,Salty Snacks,5.49,2.8,0.35,0.15,FALSE,2
+10018,070123001091,Party Size Variety Pack 24ct,Salty Snacks,14.99,8.5,0.3,0.12,TRUE,4
+10019,070123001107,Thick Cut Sea Salt 8oz,Salty Snacks,4.49,1.9,0.45,0.25,FALSE,2

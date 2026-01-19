@@ -1,0 +1,53 @@
+*** HERITAGE HARVEST SNACKS | INTERNAL SALES KNOWLEDGE BASE ***
+*** CONFIDENTIAL - FOR INTERNAL USE ONLY ***
+
+SECTION 1: BRAND OVERVIEW
+Company Name: Heritage Harvest Snacks
+Mission: To provide organic, non-GMO, and sustainably sourced salty snacks that honor traditional farming roots.
+Key Selling Points:
+- 100% Avocado Oil fried
+- No artificial preservatives
+- Regenerative Agriculture certified
+
+SECTION 2: PRODUCT PORTFOLIO (SALTY SNACKS)
+1. Sea Salt Kettle Chips (5oz)
+   - SKU: HH-CHIP-SS-001
+   - UPC: 850012345678
+   - MSRP: $4.99
+   - Case Count: 12
+
+2. Jalapeño Heat Kettle Chips (5oz)
+   - SKU: HH-CHIP-JAL-002
+   - UPC: 850012345679
+   - MSRP: $4.99
+   - Case Count: 12
+
+3. White Cheddar Popcorn (4oz)
+   - SKU: HH-POP-WC-003
+   - UPC: 850012345680
+   - MSRP: $3.99
+   - Case Count: 12
+
+SECTION 3: TRADE SPEND & PRICING GUIDELINES
+**CRITICAL MARGIN THRESHOLD:**
+All trade deals and promotional pricing must maintain a minimum margin of **59.2%**. 
+Any deal submitted below this threshold will be automatically rejected by the Trade Spend Auditor (Agent 02).
+
+Authorized Distributors:
+- UNFI (National)
+- KeHE (National)
+- DPI (West Coast)
+
+Payment Terms:
+- Standard: Net 30
+- Early Pay: 2% Net 10 (Requires Finance Approval)
+
+SECTION 4: LOGISTICS & SUPPLY CHAIN
+- Lead Time: 14 Days for POs under 5 pallets.
+- Lead Time: 21 Days for Truckload (TL) orders.
+- Minimum Order Quantity (MOQ): $1,500 or 1 Pallet.
+
+SECTION 5: CONTACTS
+- Sales Support: sales-support@heritageharvest.com
+- Finance/Credit: finance@heritageharvest.com
+- Logistics: supplychain@heritageharvest.com
