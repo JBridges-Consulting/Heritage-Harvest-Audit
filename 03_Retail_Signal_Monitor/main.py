@@ -40,7 +40,7 @@ def send_email(recipient, buyer_name, content):
         
         body = f"Hello {buyer_name},\n\nBased on today's shelf scan, we have identified significant revenue leakage in your category. See the full strategic recovery plan below:\n\n{clean_content}{signature}"
         
-        msg.attach(MIMEText(body, 'plain'))
+        msg.attach(MIMEText(body, 'plain', 'utf-8')) # Added 'utf-8' here
         
         server = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()
