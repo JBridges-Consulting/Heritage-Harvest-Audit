@@ -32,15 +32,11 @@ def send_email(recipient, buyer_name, content):
         msg['To'] = recipient
         msg['Subject'] = f"Strategic Category Opportunity for {buyer_name}"
         
-        # EXACT SIGNATURE
         signature = "\n\nJenica\nHarvest Heritage\nNational Account Manager, Grocery"
+        body = f"Hello {buyer_name},\n\nBased on today's shelf scan, we have identified significant revenue leakage and shelf-space inefficiencies. See the full strategic plan below:\n\n{content}{signature}"
         
-        # Build the initial body
-        raw_body = f"Hello {buyer_name},\n\nBased on today's shelf scan, we have identified significant revenue leakage in your category. See the full strategic recovery plan below:\n\n{content}{signature}"
-        
-        # THE ULTIMATE FIX: This scrubs EVERY hidden character from the final text
-        clean_body = raw_body.replace('\xa0', ' ').encode('utf-8', errors='ignore').decode('utf-8')
-        
+        # FINAL ENCODING SHIELD
+        clean_body = body.replace('\xa0', ' ').encode('utf-8', errors='ignore').decode('utf-8')
         msg.attach(MIMEText(clean_body, 'plain', 'utf-8'))
         
         server = smtplib.SMTP('smtp.gmail.com', 587)
@@ -79,7 +75,7 @@ if df_pricing is not None:
             st.image(uploaded_file, caption="Shelf Reality", use_container_width=True)
             if st.button("📈 Run Strategic Analysis"):
                 base64_image = encode_image(uploaded_file)
-                with st.spinner("Calculating Revenue Loss..."):
+                with st.spinner("Analyzing Shelf Efficiency..."):
                     response = client.chat.completions.create(
                         model="gpt-4o",
                         temperature=0, 
@@ -92,18 +88,18 @@ if df_pricing is not None:
                                     System: Senior Category Manager. Use ONLY this data: {pricing_context}
                                     
                                     MISSION:
-                                    1. START with a professional 3-sentence summary on category leakage. (No header).
-                                    2. Identify 6 empty shelf facings. 
-                                    3. TABLE: [Competitor OOS, Replacement SKU, OOS Quantity, Weekly Revenue Loss Calculation, Weekly Revenue Loss].
+                                    1. EXECUTIVE SUMMARY: Start with a professional 3-sentence summary. Focus on category decay and identifying "Overskewed" competitor products that are wasting shelf space.
+                                    2. VISIBILITY SCAN: Identify 6 empty or inefficiently used shelf facings.
+                                    3. TABLE: [Competitor SKU, Status (OOS or Overskewed), Replacement SKU, Weekly Revenue Loss Calculation, Weekly Revenue Loss].
                                     
                                     MATH RULE: 
                                     - Weekly Revenue Loss = (list_price * 7 * weekly_velocity * 1). 
-                                    - Show math in 'Weekly Revenue Loss Calculation' (e.g., $4.49 * 7 * 4 * 1).
+                                    - You MUST show the math in 'Weekly Revenue Loss Calculation' (e.g., $4.49 * 7 * 4 * 1).
                                     
-                                    4. BUYER PITCH: Write two bolded paragraphs. (No headers). 
-                                    - BOLD the total aggregate revenue loss across all 6 facings.
+                                    4. STRATEGIC PITCH: Write two bolded paragraphs explaining why cutting "Overskewed" slow-movers in favor of Heritage Harvest will increase total category ROI.
+                                    - BOLD the total aggregate weekly revenue loss.
 
-                                    Format: Markdown table and plain text only.
+                                    Format: Markdown table and plain text. No technical headers.
                                     """
                                 },
                                 {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_image}", "detail": "high"}}
