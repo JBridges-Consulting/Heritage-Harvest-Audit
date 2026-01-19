@@ -55,15 +55,23 @@ def send_email(recipient, buyer_name, content):
 # --- 3. DATA LOAD (MANDATORY SOURCE OF TRUTH) ---
 def load_pricing():
     try:
-        # Load the CSV and clean columns
-        df = pd.read_csv("pricing_master_UPSPW.csv", skipinitialspace=True)
+        # Use the RAW GitHub URL so it works everywhere (Mac, GitHub, Streamlit Cloud)
+        # Replace 'YOUR_USERNAME' and 'YOUR_REPO' with your actual GitHub details
+        url = "https://raw.githubusercontent.com/JBridges-Consulting/CPG_AgenticWorkflows_Portfolio/main/03_Retail_Signal_Monitor/pricing_master_UPSPW.csv"
+        
+        df = pd.read_csv(url, skipinitialspace=True)
+        
+        # Standardize columns to lowercase to avoid naming crashes
         df.columns = df.columns.str.lower().str.strip()
+        
+        # Force numeric conversion for math accuracy
+        df['list_price'] = pd.to_numeric(df['list_price'], errors='coerce')
+        df['weekly_velocity'] = pd.to_numeric(df['weekly_velocity'], errors='coerce')
+        
         return df
     except Exception as e:
-        st.error(f"Critical Error: Could not load pricing_master_UPSPW.csv. {e}")
+        st.error(f"Cloud Data Error: Could not fetch CSV from GitHub. {e}")
         return None
-
-df_pricing = load_pricing()
 
 # --- 4. THE INTERFACE ---
 if df_pricing is not None:
