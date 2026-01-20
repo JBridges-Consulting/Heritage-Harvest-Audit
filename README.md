@@ -23,13 +23,6 @@ The Problem: "Out-of-Sight, Out-of-Mind." Brands lose millions when products are
 The Solution: "I make AI watch the market so humans don't have to." A Vision-AI tool that analyzes shelf photos to detect stock-outs and pricing violations.
 Key Tech:  OpenAI GPT-4o, Multimodal AI, Image Processing.
 
-Agent 4: The Autonomous JBP Strategist
-
-The Problem: Creating a Joint Business Plan (JBP) with a retailer takes weeks of data synthesis.
-The Solution: An executive-level orchestrator that pulls data from the first three agents to generate winning retail strategies and promotional roadmaps.
-
-Key Tech: Data Synthesis, Predictive Strategy, LLM Orchestration.
-
 🛠️ Technical Stack
 
 Language: Python 3.12 (Optimized for Silicon Mac environments)
